@@ -15,7 +15,7 @@ int main()
 			i++;
 		else j++;
 	}
-	cout << "jai trouvé : " << i << " 1 et "<< j << " 0"<<endl;
+	cout << "jai trouvé : " << i << "  de 1 et "<< j << " de 0"<<endl;
 	
 	vector<int> same;
 	g.getSameElement(0,1,same);
