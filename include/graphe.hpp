@@ -33,12 +33,12 @@ class graphe
 	//Compte le nombre de 1 sur la ligne
 	
 	vector<int>& getSameElement(unsigned int element1,unsigned int element2,vector<int> &same);
-	//Redonne tous les éléments que element1 et element 2 ont en commun, sauf element1 et element2 qui sont dans same
+	//Redonne tous les éléments que element1 et element 2 ont en commun, sauf element1 et element2 et les stockent dans same
 	
 	bool isComplete(vector< vector<int> > &mymat);
 	//retourne si l'arbre est complet
 	
-	pair<int,int> maxElement();
+	vector < pair<int,int> > getElementWithMaxArc();
 	//retourne l'élément avec le plus d'arc partant
 	
 	void readFile();	
