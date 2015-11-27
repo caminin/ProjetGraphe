@@ -73,22 +73,26 @@ bool graphe::isComplete(vector< vector<int> > &mymat)
 	return res;
 }
 
-
-pair<int,int> graphe::maxElement()
+bool sortVectorPair(pair<int,int> p1, pair<int,int> p2)
 {
-	int i=0;int num_row=0;int nb_elements=0;
-	for (auto n:mat)
+	return (p1.second > p2.second);
+}
+
+
+vector< pair<int,int> > graphe::getElementSortedByArcCount()
+{
+	vector< pair<int,int> > list_node;
+	for(unsigned int i=0;i<mat.size();i++)
 	{
-		int temp=countRow(n);
-		if(nb_elements<temp)
-		{
-			num_row=i;
-			nb_elements=temp;
-		}
-		i++;
+		list_node.push_back(make_pair(i,countRow(mat[i])));
 	}
 	
-	return pair<int,int>(num_row,nb_elements);
+	std::sort(list_node.begin(),list_node.end(),sortVectorPair);
+	
+	//for(auto n:list_node)
+	//	cout << (n.second) << "," << (n.first) << endl;
+		
+	return list_node;
 }
 
 

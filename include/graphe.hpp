@@ -12,6 +12,8 @@
 #include <sstream>
 #include <stdio.h>
 #include <map>
+#include <algorithm> 
+#include <utility>
 
 using namespace std;
 
@@ -38,12 +40,14 @@ class graphe
 	bool isComplete(vector< vector<int> > &mymat);
 	//retourne si l'arbre est complet
 	
-	vector < pair<int,int> > getElementWithMaxArc();
-	//retourne l'élément avec le plus d'arc partant
+	vector< pair<int,int> > getElementSortedByArcCount();
+	//retourne une liste d'élément triés par avec le plus d'arc partants
 	
 	void readFile();	
 	//lit un fichier et le rentre dans l'arbre
+	
 };
 
+bool sortVectorPair(pair<int,int> p1, pair<int,int> p2);
 
 #endif

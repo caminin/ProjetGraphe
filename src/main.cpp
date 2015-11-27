@@ -59,8 +59,6 @@ void runProgramme(int pourcentage)
 	graphe g;
 	g.readFile();
 	g.affichageMatrice();
-	pair<int,int> p=g.maxElement();
-	cout << (get<0>(p)) << "|" << (get<1>(p)) << endl;
 	int i=0,j=0;
 	for(auto n:g.mat[53])
 	{
@@ -77,6 +75,10 @@ void runProgramme(int pourcentage)
 		cout << n << "|";
 	}
 	cout <<endl<<pourcentage << endl;
+	
+	cout << "affichage des éléments" << endl;
+	g.getElementSortedByArcCount();
+	
 }
 
 
