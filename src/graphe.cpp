@@ -61,12 +61,19 @@ vector<int>& graphe::getSameElement(unsigned int element1,unsigned int element2,
 bool graphe::isComplete(vector< vector<int> > &mymat)
 {
 	bool res=true;
-	for (auto n:mymat)
+	if (mymat.size()<2)
 	{
-		if(countRow(n)!=(n.size()-1))
+		res=true;
+	}
+	else
+	{
+		for (auto n:mymat)
 		{
-			res=false;
-			return res;			
+			if(countRow(n)!=(n.size()-1))
+			{
+				res=false;
+				return res;			
+			}
 		}
 	}
 	
