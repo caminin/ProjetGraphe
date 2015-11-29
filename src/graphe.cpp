@@ -151,3 +151,5 @@ void graphe::readFile()
 		}
 	}
 }
+
+cout << "ssdfsdf" << endl;
