@@ -76,9 +76,6 @@ void runProgramme(int pourcentage)
 	}
 	cout <<endl<<pourcentage << endl;
 	
-	cout << "affichage des éléments" << endl;
-	g.getElementSortedByArcCount();
-	
 }
 
 
