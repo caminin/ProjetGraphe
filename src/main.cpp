@@ -79,13 +79,14 @@ void runProgramme(int pourcentage)
 	cout << "affichage des éléments" << endl;
 	g.getElementSortedByArcCount();
 	
+	g.runRechercheClique(pourcentage);
 }
 
 
 int main(int argc, char* argv[])
 {
 	
-	int pourcentage=parseCommandLine(argc,argv);
+	int pourcentage=parseCommandLine(argc, argv);
 	
 	if(pourcentage!=-1)
 	{

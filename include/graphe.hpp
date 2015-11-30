@@ -37,7 +37,7 @@ class graphe
 	vector<int>& getSameElement(unsigned int element1,unsigned int element2,vector<int> &same);
 	//Redonne tous les éléments que element1 et element 2 ont en commun, sauf element1 et element2 et les stockent dans same
 	
-	bool isComplete(vector< vector<int> > &mymat);
+	bool isComplete(vector< pair< int, vector<int> > > &mymat);
 	//retourne si l'arbre est complet
 	
 	vector< pair<int,int> > getElementSortedByArcCount();
@@ -46,6 +46,23 @@ class graphe
 	void readFile();	
 	//lit un fichier et le rentre dans l'arbre
 	
+	vector<int> getLinkElement(int element);
+	//Retourne la liste des éléments ayant un arc avec l'élement choisis
+	
+	int getMaxArcCountElement(vector< pair< int, vector<int> > > sous_graphe);
+	//Retourne l'élément possédant le plus d'arc dans un sous graphe
+	
+	vector< pair< int, vector<int> > > sousGraphe(int element);
+	//Lit la matrice et retourne une matrice plus petite, limitée aux sommets ayant un arc avec l'élement choisis
+	
+	vector< pair< int, vector<int> > > sousGraphe2(int element, vector< pair< int, vector<int> > > sous_graphe);
+	//Lit un sous-graphe et retourne une matrice plus petite, limitée aux sommets ayant un arc avec l'élement choisis
+	
+	void rechercheClique(int sommet, vector<int> &clique_en_cours, vector< pair< int, vector<int> > > &sous_graphe);
+	//Recherche récursivement une clique dans la matrice et la stocke dans clique_en_cours
+	
+	void runRechercheClique(int pourcentage);
+	//
 };
 
 bool sortVectorPair(pair<int,int> p1, pair<int,int> p2);

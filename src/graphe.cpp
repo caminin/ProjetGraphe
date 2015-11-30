@@ -58,7 +58,7 @@ vector<int>& graphe::getSameElement(unsigned int element1,unsigned int element2,
 	return same;
 }
 
-bool graphe::isComplete(vector< vector<int> > &mymat)
+bool graphe::isComplete(vector< pair< int, vector<int> > > &mymat)
 {
 	bool res=true;
 	if (mymat.size()<2)
@@ -69,7 +69,7 @@ bool graphe::isComplete(vector< vector<int> > &mymat)
 	{
 		for (auto n:mymat)
 		{
-			if(countRow(n)!=(n.size()-1))
+			if(countRow(n.second)!=(n.second.size()-1))
 			{
 				res=false;
 				return res;			
@@ -152,4 +152,97 @@ void graphe::readFile()
 	}
 }
 
-cout << "ssdfsdf" << endl;
+
+vector<int> graphe::getLinkElement(int element) {
+	vector<int> result;
+	for (int i = 0; i < nb_sommets; ++i) {
+		if (mat[element][i] == 1) result.push_back(i);
+	}
+	return result;
+}
+
+
+int graphe::getMaxArcCountElement(vector< pair< int, vector<int> > > sous_graphe) {
+	int nb_arc = -1;
+	int res;
+	for (unsigned int i = 0; i < sous_graphe.size(); ++i) {
+		int tmp = countRow(sous_graphe[i].second);
+		if (tmp > nb_arc) {
+			 nb_arc = tmp;
+			 res = sous_graphe[i].first;
+		 }
+	}
+	return res;
+}
+
+
+
+vector< pair< int, vector<int> > > graphe::sousGraphe(int element) {
+	vector< pair< int, vector<int> > > result;
+	vector<int> sommets_a_traiter = getLinkElement(element);
+	for (unsigned int i = 0; i < sommets_a_traiter.size(); ++i) {
+		vector<int> tmp; 
+		for (unsigned int j = 0; j < sommets_a_traiter.size(); ++j) {
+			tmp.push_back(mat[sommets_a_traiter[i]][sommets_a_traiter[j]]);
+		}
+		result.push_back(make_pair(sommets_a_traiter[i], tmp));
+	}
+	return result;
+}
+
+
+vector< pair< int, vector<int> > > graphe::sousGraphe2(int element, vector< pair< int, vector<int> > > sous_graphe) {
+	vector< pair< int, vector<int> > > result;
+	vector<int> sommets_a_traiter;
+	
+	for (unsigned int i = 0; i < sous_graphe.size(); ++i) {
+		if (sous_graphe[i].first == element) {
+			for (unsigned int j = 0; j < sous_graphe[i].second.size(); ++j) {
+				if (sous_graphe[i].second[j] == 1) sommets_a_traiter.push_back(sous_graphe[j].first);
+			}
+			break;
+		}
+	}
+		
+	for (unsigned int i = 0; i < sommets_a_traiter.size(); ++i) {
+		vector<int> tmp; 
+		for (unsigned int j = 0; j < sommets_a_traiter.size(); ++j) {
+			tmp.push_back(mat[sommets_a_traiter[i]][sommets_a_traiter[j]]);
+		}
+		result.push_back(make_pair(sommets_a_traiter[i], tmp));
+	}
+	return result;
+}
+
+
+void graphe::rechercheClique(int sommet, vector<int> &clique_en_cours, vector< pair< int, vector<int> > > &sous_graphe) {
+	if (isComplete(sous_graphe)) {
+		for (auto n:sous_graphe) clique_en_cours.push_back(n.first);
+	}
+	else {
+		sous_graphe = sousGraphe2(sommet, sous_graphe);
+		int tmp = getMaxArcCountElement(sous_graphe);
+		clique_en_cours.push_back(tmp);
+		rechercheClique(tmp, clique_en_cours, sous_graphe);
+	}
+}
+
+void graphe::runRechercheClique(int pourcentage) {
+	vector<int> clique_maximale;
+	vector< pair<int, int> > liste_element_ordonnee = getElementSortedByArcCount();
+	int nb_sommets_a_traiter = (int)(nb_sommets * pourcentage)/100;
+	for (int i = 0; i < nb_sommets_a_traiter; ++i) {
+		vector < pair< int, vector<int> > > sous_graphe = sousGraphe(liste_element_ordonnee[i].first);
+		vector<int> clique_en_cours;
+		rechercheClique(getMaxArcCountElement(sous_graphe), clique_en_cours, sous_graphe);
+		if (clique_en_cours.size() > clique_maximale.size()) {
+			clique_maximale = clique_en_cours;
+			cout << "Changement de clique maximale" << endl;
+		}
+	}
+	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";
+	sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
+	for (auto i:clique_maximale) cout << i << " ";
+	cout << endl; 
+}
+
