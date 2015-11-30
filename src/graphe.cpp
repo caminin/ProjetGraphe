@@ -104,9 +104,9 @@ vector< pair<int,int> > graphe::getElementSortedByArcCount()
 
 
 
-void graphe::readFile()
+void graphe::readFile(string file_name)
 {
-	ifstream fichier("graphe.txt");
+	ifstream fichier(file_name.c_str());
 	if(!fichier) 
 	{
 		cerr << "Le fichier help n'existe pas" << endl;
@@ -128,7 +128,9 @@ void graphe::readFile()
 			    istringstream iss2(nb_string[3]);
 			    iss2>>nb_arcs;
 			    
-			    cout << "Arc : " << nb_arcs <<", Sommets : " << nb_sommets << endl;
+			    cout << "Je créé une matrice de taille " << nb_sommets << endl;
+			    
+			    
 			    mat.resize(nb_sommets,vector<int>(nb_sommets,0));
 			    
 		    }
@@ -149,7 +151,11 @@ void graphe::readFile()
 			    
 		    }
 		}
+		cout << "~______________" << endl;
+		cout << "~Il a : " << nb_arcs << " Arcs" << endl;
+		cout << "~Il a : " << nb_sommets << " Sommets" << endl;
+		vector < pair<int,int> > sorted=getElementSortedByArcCount();
+		cout << "~Le noeud : " << sorted[0].first << " a " << sorted[0].second << " sommets" <<  endl;
 	}
 }
 
-cout << "ssdfsdf" << endl;

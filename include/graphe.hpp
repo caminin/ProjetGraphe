@@ -41,9 +41,9 @@ class graphe
 	//retourne si l'arbre est complet
 	
 	vector< pair<int,int> > getElementSortedByArcCount();
-	//retourne une liste d'élément triés par avec le plus d'arc partants
+	//retourne une liste d'élément triés par avec le plus d'arc partants. Le premier est le nombre d'arcs, le deuxième le numéro du noeud
 	
-	void readFile();	
+	void readFile(string file_name);	
 	//lit un fichier et le rentre dans l'arbre
 	
 };
