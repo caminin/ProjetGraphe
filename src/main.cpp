@@ -9,7 +9,7 @@ pair<int,string> parseCommandLine(int argc, char* argv[])
 {
 	int int_return;
 	string file_name="";
-	if(argc<2)
+	if(argc<3)
 	{
 	  std::cout << "Donnez un nombre entre 0 et 100, --help pour plus d'info" << std::endl;
 	  int_return=-1;
@@ -30,6 +30,14 @@ pair<int,string> parseCommandLine(int argc, char* argv[])
 		   }
 	  }
 	  int_return=-1;
+	}
+	else if(strcmp(argv[1],"affichage")==0)
+	{
+		for(unsigned int i=0;i<strlen(argv[2]);i++)
+		{
+			file_name+=argv[2][i];
+		}
+		int_return =-2;
 	}
 	else
 	{
@@ -60,12 +68,19 @@ pair<int,string> parseCommandLine(int argc, char* argv[])
 	return make_pair(int_return,file_name);
 }
 
+void runAffichage(string file_name)
+{
+	graphe g;
+	g.readFile(file_name);
+	g.affichage();
+}
+
 void runProgramme(int pourcentage,string file_name)
 {
 	graphe g;
 	g.readFile(file_name);
-	g.affichageMatrice();
 	pourcentage++;//pour éviter le warning qui dit que pourncetage n'est pas utilisé'
+	//Mettre le run du programme
 }
 
 
@@ -74,9 +89,13 @@ int main(int argc, char* argv[])
 	
 	pair<int,string> resParceCommand=parseCommandLine(argc,argv);
 	
-	if(resParceCommand.first!=-1)
+	if(resParceCommand.first>=0)
 	{
-		runProgramme(resParceCommand.first,resParceCommand.second);
+		
+	}
+	else if(resParceCommand.first==-2)
+	{
+		runAffichage(resParceCommand.second);
 	}
 	
 	return 0;

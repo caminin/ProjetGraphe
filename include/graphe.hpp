@@ -28,8 +28,8 @@ class graphe
 	int Split(vector<string>& vecteur, string chaine, char separateur); 
 	//Prend une chaine de caractère et la sépare en plusieurs chaines en fonction du séparateur
 	
-	void affichageMatrice();
-	//Affiche une matrice d'adjacence
+	void affichage();
+	//Fonction pour afficher dans l'ui
 	
 	unsigned int countRow(vector<int> &row);
 	//Compte le nombre de 1 sur la ligne

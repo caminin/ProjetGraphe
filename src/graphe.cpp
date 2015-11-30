@@ -21,7 +21,7 @@ int graphe::Split(vector<string>& vecteur, string chaine, char separateur)
 	return vecteur.size();
 }
 
-void graphe::affichageMatrice()
+void graphe::affichage()
 {
 	for(vector<int> vec:mat)
 	{
@@ -33,6 +33,12 @@ void graphe::affichageMatrice()
 		
 		cout << "|" << endl;
 	}
+	cout << "J'ai chargé une matrice de taille " << nb_sommets << endl;
+	cout << "~______________" << endl;
+	cout << "~Il a : " << nb_arcs << " Arcs" << endl;
+	cout << "~Il a : " << nb_sommets << " Sommets" << endl;
+	vector < pair<int,int> > sorted=getElementSortedByArcCount();
+	cout << "~Le noeud : " << sorted[0].first << " a " << sorted[0].second << " sommets" <<  endl;
 }
 
 unsigned int graphe::countRow(vector<int> &row)
@@ -128,7 +134,7 @@ void graphe::readFile(string file_name)
 			    istringstream iss2(nb_string[3]);
 			    iss2>>nb_arcs;
 			    
-			    cout << "Je créé une matrice de taille " << nb_sommets << endl;
+			    //
 			    
 			    
 			    mat.resize(nb_sommets,vector<int>(nb_sommets,0));
@@ -151,11 +157,7 @@ void graphe::readFile(string file_name)
 			    
 		    }
 		}
-		cout << "~______________" << endl;
-		cout << "~Il a : " << nb_arcs << " Arcs" << endl;
-		cout << "~Il a : " << nb_sommets << " Sommets" << endl;
-		vector < pair<int,int> > sorted=getElementSortedByArcCount();
-		cout << "~Le noeud : " << sorted[0].first << " a " << sorted[0].second << " sommets" <<  endl;
+		
 	}
 }
 
