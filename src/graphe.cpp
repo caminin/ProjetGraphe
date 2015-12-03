@@ -317,6 +317,7 @@ void graphe::runRechercheCliqueIteratif(int pourcentage) {
 	vector<int> clique_maximale;
 	vector< pair<int, int> > liste_element_ordonnee = getElementSortedByArcCount();
 	int nb_sommets_a_traiter = (int)(nb_sommets * pourcentage)/100;
+	Chrono mychrono(0,"milliseconds");
 	for (int i = 0; i < nb_sommets_a_traiter; ++i) {
 		vector<int> clique_en_cours = rechercheCliqueIteratif(liste_element_ordonnee[i].first);
 		if (clique_en_cours.size() > clique_maximale.size()) {
