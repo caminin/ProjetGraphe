@@ -21,7 +21,7 @@ int graphe::Split(vector<string>& vecteur, string chaine, char separateur)
 	return vecteur.size();
 }
 
-void graphe::affichageMatrice()
+void graphe::affichage()
 {
 	for(vector<int> vec:mat)
 	{
@@ -33,6 +33,12 @@ void graphe::affichageMatrice()
 		
 		cout << "|" << endl;
 	}
+	cout << "J'ai chargé une matrice de taille " << nb_sommets << endl;
+	cout << "~______________" << endl;
+	cout << "~Il a : " << nb_arcs << " Arcs" << endl;
+	cout << "~Il a : " << nb_sommets << " Sommets" << endl;
+	vector < pair<int,int> > sorted=getElementSortedByArcCount();
+	cout << "~Le noeud : " << sorted[0].first << " a " << sorted[0].second << " sommets" <<  endl;
 }
 
 unsigned int graphe::countRow(vector<int> &row)
@@ -104,9 +110,9 @@ vector< pair<int,int> > graphe::getElementSortedByArcCount()
 
 
 
-void graphe::readFile()
+void graphe::readFile(string file_name)
 {
-	ifstream fichier("graphe.txt");
+	ifstream fichier(file_name.c_str());
 	if(!fichier) 
 	{
 		cerr << "Le fichier help n'existe pas" << endl;
@@ -128,7 +134,9 @@ void graphe::readFile()
 			    istringstream iss2(nb_string[3]);
 			    iss2>>nb_arcs;
 			    
-			    cout << "Arc : " << nb_arcs <<", Sommets : " << nb_sommets << endl;
+			    //
+			    
+			    
 			    mat.resize(nb_sommets,vector<int>(nb_sommets,0));
 			    
 		    }
@@ -149,12 +157,17 @@ void graphe::readFile()
 			    
 		    }
 		}
+		
 	}
 }
 
 
 vector<int> graphe::getLinkElement(int element) {
 	vector<int> result;
+	/*
+	 * On parcours la ligne de la matrice correspondant à l'élément, et dès qu'on trouve un arc
+	 * qui le relie avec un autre sommet on rajoute ce sommet dans un vecteur
+	 */
 	for (int i = 0; i < nb_sommets; ++i) {
 		if (mat[element][i] == 1) result.push_back(i);
 	}
@@ -165,6 +178,10 @@ vector<int> graphe::getLinkElement(int element) {
 int graphe::getMaxArcCountElement(vector< pair< int, vector<int> > > sous_graphe) {
 	int nb_arc = -1;
 	int res;
+	/*
+	 * On parcours la matrice pour trouver le sommet qui possède le plus d'arcs avec d'autres sommets
+	 * et on renvoi ce sommet
+	 */
 	for (unsigned int i = 0; i < sous_graphe.size(); ++i) {
 		int tmp = countRow(sous_graphe[i].second);
 		if (tmp > nb_arc) {
@@ -180,6 +197,13 @@ int graphe::getMaxArcCountElement(vector< pair< int, vector<int> > > sous_graphe
 vector< pair< int, vector<int> > > graphe::sousGraphe(int element) {
 	vector< pair< int, vector<int> > > result;
 	vector<int> sommets_a_traiter = getLinkElement(element);
+	/*
+	 * On parcours la matrice et on stocke dans une sous-matrice les éléments qui 
+	 * sont liés au sommet choisis (ici element). Chaque pair contient en entier correspondant
+	 * à l'identifiant du sommet dans la matrice principale, et un vecteur d'entiers (0 ou 1)
+	 * correspondant à la présence ou l'absence d'arc entre ce sommet et les autres de la 
+	 * sous-matrice.
+	 */
 	for (unsigned int i = 0; i < sommets_a_traiter.size(); ++i) {
 		vector<int> tmp; 
 		for (unsigned int j = 0; j < sommets_a_traiter.size(); ++j) {
@@ -195,6 +219,10 @@ vector< pair< int, vector<int> > > graphe::sousGraphe2(int element, vector< pair
 	vector< pair< int, vector<int> > > result;
 	vector<int> sommets_a_traiter;
 	
+	/*
+	 * On récupère dans un sous-graphe tout les sommets avec lequel element est relié.
+	 */
+	
 	for (unsigned int i = 0; i < sous_graphe.size(); ++i) {
 		if (sous_graphe[i].first == element) {
 			for (unsigned int j = 0; j < sous_graphe[i].second.size(); ++j) {
@@ -203,7 +231,13 @@ vector< pair< int, vector<int> > > graphe::sousGraphe2(int element, vector< pair
 			break;
 		}
 	}
-		
+	
+	/*
+	 * On parcours ce sous-graphe, et comme pour la fonction sousGraphe on construit et
+	 * on renvoi un autre sous-graphe composé exclusivement des sommets avec lequel element
+	 * est relié. 
+	 */
+	 
 	for (unsigned int i = 0; i < sommets_a_traiter.size(); ++i) {
 		vector<int> tmp; 
 		for (unsigned int j = 0; j < sommets_a_traiter.size(); ++j) {
@@ -216,9 +250,24 @@ vector< pair< int, vector<int> > > graphe::sousGraphe2(int element, vector< pair
 
 
 void graphe::rechercheClique(int sommet, vector<int> &clique_en_cours, vector< pair< int, vector<int> > > &sous_graphe) {
+	
+	/*
+	 * On met comme cas d'arrêt de la fonction récursive que le sous_graphe en paramètre sois complet. 
+	 * Dans ce cas on rajoute ses éléments dans clique_en_cours. 
+	 */
+	
 	if (isComplete(sous_graphe)) {
 		for (auto n:sous_graphe) clique_en_cours.push_back(n.first);
 	}
+	
+	/*
+	 * Dans l'autres cas, c'est que clique_en_cours peut encore être agrandis. 
+	 * sous_graphe devient le sous-graphe composé de tous les éléments étant présent
+	 * dans sous_graphe, et étant lié à sommet.
+	 * sommet devient le sommet possédant le plus d'arcs du nouveau sous-graphe
+	 * Ce sommet est alors ajouté à clique_en_cours et on relance un appel à rechercheClique
+	 */
+	 
 	else {
 		sous_graphe = sousGraphe2(sommet, sous_graphe);
 		int tmp = getMaxArcCountElement(sous_graphe);
@@ -237,7 +286,9 @@ void graphe::runRechercheClique(int pourcentage) {
 		rechercheClique(getMaxArcCountElement(sous_graphe), clique_en_cours, sous_graphe);
 		if (clique_en_cours.size() > clique_maximale.size()) {
 			clique_maximale = clique_en_cours;
-			cout << "Changement de clique maximale" << endl;
+			cout << "Changement de clique maximale :" << endl;
+			for (auto i:clique_maximale) cout << i << " " ;
+			cout << endl;
 		}
 	}
 	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";

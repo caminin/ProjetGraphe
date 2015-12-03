@@ -5,10 +5,11 @@
 
 using namespace std;
 
-int parseCommandLine(int argc, char* argv[])
+pair<int,string> parseCommandLine(int argc, char* argv[])
 {
 	int int_return;
-	if(argc<2)
+	string file_name="";
+	if(argc<3)
 	{
 	  std::cout << "Donnez un nombre entre 0 et 100, --help pour plus d'info" << std::endl;
 	  int_return=-1;
@@ -30,6 +31,14 @@ int parseCommandLine(int argc, char* argv[])
 	  }
 	  int_return=-1;
 	}
+	else if(strcmp(argv[1],"affichage")==0)
+	{
+		for(unsigned int i=0;i<strlen(argv[2]);i++)
+		{
+			file_name+=argv[2][i];
+		}
+		int_return =-2;
+	}
 	else
 	{
 		float puissance=1;
@@ -48,49 +57,47 @@ int parseCommandLine(int argc, char* argv[])
 			cout << "Le nombre doit être compris entre 0 et 100" << endl;
 			int_return=-1;
 		}
+		
+		for(unsigned int i=0;i<strlen(argv[2]);i++)
+		{
+			file_name+=argv[2][i];
+		}
 	
 	}
 		   
-	return int_return;
+	return make_pair(int_return,file_name);
 }
 
-void runProgramme(int pourcentage)
+
+void runAffichage(string file_name)
 {
 	graphe g;
-	g.readFile();
-	g.affichageMatrice();
-	int i=0,j=0;
-	for(auto n:g.mat[53])
-	{
-		if(n==1)
-			i++;
-		else j++;
-	}
-	cout << "jai trouvé : " << i << " 1 et "<< j << " 0"<<endl;
-	
-	vector<int> same;
-	g.getSameElement(0,1,same);
-	for(auto n:same)
-	{
-		cout << n << "|";
-	}
-	cout <<endl<<pourcentage << endl;
-	
-	cout << "affichage des éléments" << endl;
-	g.getElementSortedByArcCount();
-	
+	g.readFile(file_name);
+	g.affichage();
+}
+
+
+void runProgramme(int pourcentage, string file_name)
+{
+	graphe g;
+	g.readFile(file_name);
 	g.runRechercheClique(pourcentage);
+
 }
 
 
 int main(int argc, char* argv[])
 {
 	
-	int pourcentage=parseCommandLine(argc, argv);
+	pair<int,string> resParceCommand=parseCommandLine(argc,argv);
 	
-	if(pourcentage!=-1)
+	if(resParceCommand.first>=0)
 	{
-		runProgramme(pourcentage);
+		runProgramme(resParceCommand.first, resParceCommand.second);
+	}
+	else if(resParceCommand.first==-2)
+	{
+		runAffichage(resParceCommand.second);
 	}
 	
 	return 0;

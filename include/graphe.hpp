@@ -28,8 +28,8 @@ class graphe
 	int Split(vector<string>& vecteur, string chaine, char separateur); 
 	//Prend une chaine de caractère et la sépare en plusieurs chaines en fonction du séparateur
 	
-	void affichageMatrice();
-	//Affiche une matrice d'adjacence
+	void affichage();
+	//Fonction pour afficher dans l'ui
 	
 	unsigned int countRow(vector<int> &row);
 	//Compte le nombre de 1 sur la ligne
@@ -41,9 +41,9 @@ class graphe
 	//retourne si l'arbre est complet
 	
 	vector< pair<int,int> > getElementSortedByArcCount();
-	//retourne une liste d'élément triés par avec le plus d'arc partants
+	//retourne une liste d'élément triés par avec le plus d'arc partants. Le premier est le nombre d'arcs, le deuxième le numéro du noeud
 	
-	void readFile();	
+	void readFile(string file_name);	
 	//lit un fichier et le rentre dans l'arbre
 	
 	vector<int> getLinkElement(int element);
@@ -62,7 +62,7 @@ class graphe
 	//Recherche récursivement une clique dans la matrice et la stocke dans clique_en_cours
 	
 	void runRechercheClique(int pourcentage);
-	//
+	//Execute la fonction récursive de recherche de clique en ne prenant en compte qu'un pourcentage des sommets ayant le plus d'arcs
 };
 
 bool sortVectorPair(pair<int,int> p1, pair<int,int> p2);
