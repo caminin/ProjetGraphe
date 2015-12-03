@@ -41,26 +41,33 @@ pair<int,string> parseCommandLine(int argc, char* argv[])
 	}
 	else
 	{
-		float puissance=1;
-		float nombre=0;
-		for(int j=strlen(argv[1])-1;j>=0;j--)
+		if(argc<4)
 		{
-			nombre=nombre+(argv[1][j]-48)*puissance;
-			puissance*=10;
-		}
-		if(nombre>=0 && nombre<=100)
-		{
-			int_return=nombre;
+			cout << "Il manque des arguments, la forme est 'prog pourcentage nom_fichier algo'" << endl;
 		}
 		else
 		{
-			cout << "Le nombre doit être compris entre 0 et 100" << endl;
-			int_return=-1;
-		}
+			float puissance=1;
+			float nombre=0;
+			for(int j=strlen(argv[1])-1;j>=0;j--)
+			{
+				nombre=nombre+(argv[1][j]-48)*puissance;
+				puissance*=10;
+			}
+			if(nombre>=0 && nombre<=100)
+			{
+				int_return=nombre;
+			}
+			else
+			{
+				cout << "Le nombre doit être compris entre 0 et 100" << endl;
+				int_return=-1;
+			}
 		
-		for(unsigned int i=0;i<strlen(argv[2]);i++)
-		{
-			file_name+=argv[2][i];
+			for(unsigned int i=0;i<strlen(argv[2]);i++)
+			{
+				file_name+=argv[2][i];
+			}
 		}
 	
 	}
@@ -77,14 +84,19 @@ void runAffichage(string file_name)
 }
 
 
-void runProgramme(int pourcentage, string file_name)
+void runProgramme(int pourcentage, string file_name,bool isIteratif)
 {
 	graphe g;
 	g.readFile(file_name);
 	 // A changer en fonction de la manière dont on veux rechercher la clique
-	 
-	//g.runRechercheCliqueRecursive(pourcentage);
-	g.runRechercheCliqueIteratif(pourcentage);
+	if(isIteratif)
+	{
+		g.runRechercheCliqueIteratif(pourcentage);
+	}
+	else
+	{
+	g.runRechercheCliqueRecursive(pourcentage);
+	}		
 
 }
 
@@ -96,7 +108,7 @@ int main(int argc, char* argv[])
 	
 	if(resParceCommand.first>=0)
 	{
-		runProgramme(resParceCommand.first, resParceCommand.second);
+		runProgramme(resParceCommand.first, resParceCommand.second, (strcmp(argv[1],"--help")==0));
 	}
 	else if(resParceCommand.first==-2)
 	{
