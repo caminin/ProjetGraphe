@@ -2,6 +2,7 @@ TARGET = prog.exe
 
 SRCS = main.cpp\
        graphe.cpp\
+       chrono.cpp\
 
 OBJ_DIR = ./obj
 SRC_DIR = ./src
