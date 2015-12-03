@@ -134,7 +134,7 @@ void graphe::readFile(string file_name)
 			    istringstream iss2(nb_string[3]);
 			    iss2>>nb_arcs;
 			    
-			    //
+			    
 			    
 			    
 			    mat.resize(nb_sommets,vector<int>(nb_sommets,0));
@@ -249,15 +249,15 @@ vector< pair< int, vector<int> > > graphe::sousGraphe2(int element, vector< pair
 }
 
 
-void graphe::rechercheClique(int sommet, vector<int> &clique_en_cours, vector< pair< int, vector<int> > > &sous_graphe) {
-	
+void graphe::rechercheCliqueRecursive(vector<int> &clique_en_cours, vector< pair< int, vector<int> > > &sous_graphe) {
 	/*
 	 * On met comme cas d'arrêt de la fonction récursive que le sous_graphe en paramètre sois complet. 
 	 * Dans ce cas on rajoute ses éléments dans clique_en_cours. 
 	 */
-	
+
 	if (isComplete(sous_graphe)) {
-		for (auto n:sous_graphe) clique_en_cours.push_back(n.first);
+		for (auto n:sous_graphe) 
+			clique_en_cours.push_back(n.first);
 	}
 	
 	/*
@@ -269,21 +269,54 @@ void graphe::rechercheClique(int sommet, vector<int> &clique_en_cours, vector< p
 	 */
 	 
 	else {
-		sous_graphe = sousGraphe2(sommet, sous_graphe);
-		int tmp = getMaxArcCountElement(sous_graphe);
-		clique_en_cours.push_back(tmp);
-		rechercheClique(tmp, clique_en_cours, sous_graphe);
+		int meilleur_sommet = getMaxArcCountElement(sous_graphe);
+		clique_en_cours.push_back(meilleur_sommet);
+		sous_graphe = sousGraphe2(meilleur_sommet, sous_graphe);
+		rechercheCliqueRecursive(clique_en_cours, sous_graphe);
 	}
 }
 
-void graphe::runRechercheClique(int pourcentage) {
+
+vector<int> graphe::rechercheCliqueIteratif(int sommet) {
+	vector <int> clique_en_cours;
+	vector< pair <int, vector <int> > > sous_graphe;
+	sous_graphe = sousGraphe(sommet);
+	while (!isComplete(sous_graphe)) {
+		int meilleur_sommet = getMaxArcCountElement(sous_graphe);
+		clique_en_cours.push_back(meilleur_sommet);
+		sous_graphe = sousGraphe2(meilleur_sommet, sous_graphe); 
+	}
+	for (auto n:sous_graphe) clique_en_cours.push_back(n.first);
+	return clique_en_cours;
+}
+
+void graphe::runRechercheCliqueRecursive(int pourcentage) {
 	vector<int> clique_maximale;
 	vector< pair<int, int> > liste_element_ordonnee = getElementSortedByArcCount();
 	int nb_sommets_a_traiter = (int)(nb_sommets * pourcentage)/100;
 	for (int i = 0; i < nb_sommets_a_traiter; ++i) {
 		vector < pair< int, vector<int> > > sous_graphe = sousGraphe(liste_element_ordonnee[i].first);
 		vector<int> clique_en_cours;
-		rechercheClique(getMaxArcCountElement(sous_graphe), clique_en_cours, sous_graphe);
+		rechercheCliqueRecursive(clique_en_cours, sous_graphe);
+		if (clique_en_cours.size() > clique_maximale.size()) {
+			clique_maximale = clique_en_cours;
+			cout << "Changement de clique maximale :" << endl;
+			for (auto i:clique_maximale) cout << i << " " ;
+			cout << endl;
+		}
+	}
+	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";
+	sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
+	for (auto i:clique_maximale) cout << i << " ";
+	cout << endl; 
+}
+
+void graphe::runRechercheCliqueIteratif(int pourcentage) {
+	vector<int> clique_maximale;
+	vector< pair<int, int> > liste_element_ordonnee = getElementSortedByArcCount();
+	int nb_sommets_a_traiter = (int)(nb_sommets * pourcentage)/100;
+	for (int i = 0; i < nb_sommets_a_traiter; ++i) {
+		vector<int> clique_en_cours = rechercheCliqueIteratif(liste_element_ordonnee[i].first);
 		if (clique_en_cours.size() > clique_maximale.size()) {
 			clique_maximale = clique_en_cours;
 			cout << "Changement de clique maximale :" << endl;

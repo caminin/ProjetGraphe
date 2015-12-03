@@ -81,7 +81,11 @@ void runProgramme(int pourcentage, string file_name)
 {
 	graphe g;
 	g.readFile(file_name);
-	g.runRechercheClique(pourcentage);
+	/*
+	 * A changer en fonction de la manière dont on veux rechercher la clique
+	 * */
+	//g.runRechercheCliqueRecursive(pourcentage);
+	g.runRechercheCliqueIteratif(pourcentage);
 
 }
 

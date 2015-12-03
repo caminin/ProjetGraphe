@@ -58,11 +58,17 @@ class graphe
 	vector< pair< int, vector<int> > > sousGraphe2(int element, vector< pair< int, vector<int> > > sous_graphe);
 	//Lit un sous-graphe et retourne une matrice plus petite, limitée aux sommets ayant un arc avec l'élement choisis
 	
-	void rechercheClique(int sommet, vector<int> &clique_en_cours, vector< pair< int, vector<int> > > &sous_graphe);
+	void rechercheCliqueRecursive(vector<int> &clique_en_cours, vector< pair< int, vector<int> > > &sous_graphe);
 	//Recherche récursivement une clique dans la matrice et la stocke dans clique_en_cours
 	
-	void runRechercheClique(int pourcentage);
-	//Execute la fonction récursive de recherche de clique en ne prenant en compte qu'un pourcentage des sommets ayant le plus d'arcs
+	vector<int> rechercheCliqueIteratif(int sommet);
+	//Recherche une clique de manière itérative et la renvoi en ne prenant en compte que le sous-graphe lié au sommet passé en paramètre
+	
+	void runRechercheCliqueRecursive(int pourcentage);
+	//Execute la fonction récursive de recherche de clique en ne prenant en compte qu'un pourcentage des sommets ayant le plus d'arcs	
+	
+	void runRechercheCliqueIteratif(int pourcentage);
+	//Execute la fonction itérative de recherche de clique
 };
 
 bool sortVectorPair(pair<int,int> p1, pair<int,int> p2);
