@@ -297,19 +297,23 @@ void graphe::runRechercheCliqueRecursive(int pourcentage) {
 	Chrono mychrono(0,"milliseconds");
 	mychrono.start();
 	for (int i = 0; i < nb_sommets_a_traiter; ++i) {
+		
 		vector < pair< int, vector<int> > > sous_graphe = sousGraphe(liste_element_ordonnee[i].first);
 		vector<int> clique_en_cours;
 		rechercheCliqueRecursive(clique_en_cours, sous_graphe);
+		
 		if (clique_en_cours.size() > clique_maximale.size()) {
 			clique_maximale = clique_en_cours;
 			mychrono.stop();
 			cout << "Changement de clique maximale :" << endl;
 			for (auto i:clique_maximale) cout << i << " " ;
 			cout << endl;
-			mychrono.start();
 		}
+		cout << "_" +to_string(i*100/nb_sommets_a_traiter)<<endl;
+		mychrono.start();
 	}
 	mychrono.stop();
+	cout << "_100" << endl;
 	cout << "Temps de calcul : " << (mychrono.getDuration()/1000) <<" seconds" <<  endl;
 	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";
 	sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
@@ -333,12 +337,17 @@ void graphe::runRechercheCliqueIteratif(int pourcentage) {
 			cout << endl;
 			mychrono.start();
 		}
+		
+		cout << "_" +to_string(i*100/nb_sommets_a_traiter)<<endl;
+		mychrono.start();
 	}
 	mychrono.stop();
+	cout << "_100" << endl;
 	cout << "Temps de calcul : " << (mychrono.getDuration()/1000) <<" seconds" <<  endl;
 	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";
 	sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
 	for (auto i:clique_maximale) cout << i << " ";
 	cout << endl; 
 }
+
 

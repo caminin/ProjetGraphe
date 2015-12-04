@@ -95,7 +95,7 @@ void runProgramme(int pourcentage, string file_name,bool isIteratif)
 	}
 	else
 	{
-	g.runRechercheCliqueRecursive(pourcentage);
+		g.runRechercheCliqueRecursive(pourcentage);
 	}		
 
 }
@@ -108,7 +108,7 @@ int main(int argc, char* argv[])
 	
 	if(resParceCommand.first>=0)
 	{
-		runProgramme(resParceCommand.first, resParceCommand.second, (strcmp(argv[1],"--help")==0));
+		runProgramme(resParceCommand.first, resParceCommand.second, (strcmp(argv[3],"iteratif")==0));
 	}
 	else if(resParceCommand.first==-2)
 	{
