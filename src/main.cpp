@@ -83,8 +83,8 @@ void runProgramme(int pourcentage, string file_name)
 	g.readFile(file_name);
 	 // A changer en fonction de la manière dont on veux rechercher la clique
 	 
-	//g.runRechercheCliqueRecursive(pourcentage);
-	g.runRechercheCliqueIteratif(pourcentage);
+	g.runRechercheCliqueRecursive(pourcentage);
+	//g.runRechercheCliqueIteratif(pourcentage);
 
 }
 

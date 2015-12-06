@@ -52,17 +52,6 @@ unsigned int graphe::countRow(vector<int> &row)
 	return i;
 }
 
-vector<int>& graphe::getSameElement(unsigned int element1,unsigned int element2,vector<int> &same)
-{
-	for(unsigned int i=0;i<mat.size();i++)
-	{
-		if((mat[element1][i]==1)&&(mat[element2][i]==1)&&element1!=i&&element2!=i)
-		{
-			same.push_back(i);
-		}
-	}
-	return same;
-}
 
 bool graphe::isComplete(vector< pair< int, vector<int> > > &mymat)
 {
@@ -302,12 +291,16 @@ void graphe::runRechercheCliqueRecursive(int pourcentage) {
 		rechercheCliqueRecursive(clique_en_cours, sous_graphe);
 		if (clique_en_cours.size() > clique_maximale.size()) {
 			clique_maximale = clique_en_cours;
-			cout << "Changement de clique maximale :" << endl;
+			mychrono.stop();
+			cout << "Changement de clique maximale (" << clique_maximale.size() << " éléments) : " << endl;
 			for (auto i:clique_maximale) cout << i << " " ;
 			cout << endl;
+			mychrono.start();
 		}
 	}
-	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";
+	mychrono.stop();
+	cout << endl << "Temps de calcul : " << (mychrono.getDuration()/1000) <<" seconds" <<  endl;
+	cout << "Clique maximale trouvé (" << clique_maximale.size() << " éléments) : ";
 	sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
 	for (auto i:clique_maximale) cout << i << " ";
 	cout << endl; 
@@ -317,20 +310,22 @@ void graphe::runRechercheCliqueIteratif(int pourcentage) {
 	vector<int> clique_maximale;
 	vector< pair<int, int> > liste_element_ordonnee = getElementSortedByArcCount();
 	int nb_sommets_a_traiter = (int)(nb_sommets * pourcentage)/100;
+	Chrono mychrono(0, "milliseconds");
+	mychrono.start();
 	for (int i = 0; i < nb_sommets_a_traiter; ++i) {
 		vector<int> clique_en_cours = rechercheCliqueIteratif(liste_element_ordonnee[i].first);
 		if (clique_en_cours.size() > clique_maximale.size()) {
 			clique_maximale = clique_en_cours;
 			mychrono.stop();
-			cout << "Changement de clique maximale :" << endl;
+			cout << "Changement de clique maximale (" << clique_maximale.size() << " éléments) : " << endl;
 			for (auto i:clique_maximale) cout << i << " " ;
 			cout << endl;
 			mychrono.start();
 		}
 	}
 	mychrono.stop();
-	cout << "Temps de calcul : " << (mychrono.getDuration()/1000) <<" seconds" <<  endl;
-	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";
+	cout << endl << "Temps de calcul : " << (mychrono.getDuration()/1000) <<" seconds" <<  endl;
+	cout << "Clique maximale trouvé (" << clique_maximale.size() << " éléments) : ";
 	sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
 	for (auto i:clique_maximale) cout << i << " ";
 	cout << endl; 

@@ -35,9 +35,6 @@ class graphe
 	unsigned int countRow(vector<int> &row);
 	//Compte le nombre de 1 sur la ligne
 	
-	vector<int>& getSameElement(unsigned int element1,unsigned int element2,vector<int> &same);
-	//Redonne tous les éléments que element1 et element 2 ont en commun, sauf element1 et element2 et les stockent dans same
-	
 	bool isComplete(vector< pair< int, vector<int> > > &mymat);
 	//retourne si l'arbre est complet
 	
