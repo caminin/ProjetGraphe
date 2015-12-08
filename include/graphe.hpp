@@ -72,6 +72,10 @@ class graphe
 	void runRechercheCliqueIteratif(int pourcentage);
 	//Execute la fonction itérative de recherche de clique
 	
+	void verifClique(vector <int> &clique);
+	
+	bool isClique(vector<int> clique);
+	
 };
 
 bool sortVectorPair(pair<int,int> p1, pair<int,int> p2);
