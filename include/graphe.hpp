@@ -51,13 +51,13 @@ class graphe
 	vector<int> getLinkElement(int element);
 	//Retourne la liste des éléments ayant un arc avec l'élement choisis
 	
-	int getMaxArcCountElement(vector< pair< int, vector<int> > > sous_graphe);
+	int getMaxArcCountElement(vector< pair< int, vector<int> > > &sous_graphe);
 	//Retourne l'élément possédant le plus d'arc dans un sous graphe
 	
 	vector< pair< int, vector<int> > > sousGraphe(int element);
 	//Lit la matrice et retourne une matrice plus petite, limitée aux sommets ayant un arc avec l'élement choisis
 	
-	vector< pair< int, vector<int> > > sousGraphe2(int element, vector< pair< int, vector<int> > > sous_graphe);
+	vector< pair< int, vector<int> > > sousGraphe2(int element, vector< pair< int, vector<int> > > &sous_graphe);
 	//Lit un sous-graphe et retourne une matrice plus petite, limitée aux sommets ayant un arc avec l'élement choisis
 	
 	void rechercheCliqueRecursive(vector<int> &clique_en_cours, vector< pair< int, vector<int> > > &sous_graphe);
@@ -74,7 +74,7 @@ class graphe
 	
 	void verifClique(vector <int> &clique);
 	
-	bool isClique(vector<int> clique);
+	bool isClique(vector<int> &clique);
 	
 };
 

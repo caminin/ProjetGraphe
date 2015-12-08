@@ -176,7 +176,7 @@ vector<int> graphe::getLinkElement(int element) {
 }
 
 
-int graphe::getMaxArcCountElement(vector< pair< int, vector<int> > > sous_graphe) {
+int graphe::getMaxArcCountElement(vector< pair< int, vector<int> > > &sous_graphe) {
 	int nb_arc = -1;
 	int res;
 	/*
@@ -216,7 +216,7 @@ vector< pair< int, vector<int> > > graphe::sousGraphe(int element) {
 }
 
 
-vector< pair< int, vector<int> > > graphe::sousGraphe2(int element, vector< pair< int, vector<int> > > sous_graphe) {
+vector< pair< int, vector<int> > > graphe::sousGraphe2(int element, vector< pair< int, vector<int> > > &sous_graphe) {
 	vector< pair< int, vector<int> > > result;
 	vector<int> sommets_a_traiter;
 	
@@ -437,7 +437,7 @@ void graphe::verifClique(vector <int> &clique)
 	}
 }
 
-bool graphe::isClique(vector <int> clique)
+bool graphe::isClique(vector <int> &clique)
 {
 	bool res=true;
 	for(auto n:clique)
