@@ -23,25 +23,23 @@ int graphe::Split(vector<string>& vecteur, string chaine, char separateur)
 
 void graphe::affichage()
 {
-	for(vector<int> vec:mat)
+	for(vector<char> vec:mat)
 	{
 		cout << "|";
-		for (int nb:vec)
+		for (char nb:vec)
 		{
-			cout << nb;
+			cout << static_cast<int>(nb);
 		}
 		
 		cout << "|" << endl;
 	}
-	cout << "J'ai chargé une matrice de taille " << nb_sommets << endl;
+	cout << "La matrice chargé est de taille " << nb_sommets << endl;
 	cout << "~______________" << endl;
 	cout << "~Il a : " << nb_arcs << " Arcs" << endl;
 	cout << "~Il a : " << nb_sommets << " Sommets" << endl;
-	vector < pair<int,int> > sorted=getElementSortedByArcCount();
-	cout << "~Le noeud : " << sorted[0].first << " a " << sorted[0].second << " sommets" <<  endl;
 }
 
-unsigned int graphe::countRow(vector<int> &row)
+unsigned int graphe::countRow(vector<char> &row)
 {
 	unsigned int i=0;
 	for(auto e:row)
@@ -53,7 +51,7 @@ unsigned int graphe::countRow(vector<int> &row)
 }
 
 
-bool graphe::isComplete(vector< pair< int, vector<int> > > &mymat)
+bool graphe::isComplete(vector< pair< int, vector<char> > > &mymat)
 {
 	bool res=true;
 	if (mymat.size()<2)
@@ -62,6 +60,9 @@ bool graphe::isComplete(vector< pair< int, vector<int> > > &mymat)
 	}
 	else
 	{
+		/*
+		 * On parcours tout
+		 */
 		for (auto n:mymat)
 		{
 			if(countRow(n.second)!=(n.second.size()-1))
@@ -86,13 +87,10 @@ vector< pair<int,int> > graphe::getElementSortedByArcCount()
 	vector< pair<int,int> > list_node;
 	for(unsigned int i=0;i<mat.size();i++)
 	{
-		list_node.push_back(make_pair(i,countRow(mat[i])));
+		list_node.push_back(make_pair(i, countRow(mat[i])));
 	}
 	
 	std::sort(list_node.begin(),list_node.end(),sortVectorPair);
-	
-	//for(auto n:list_node)
-	//	cout << (n.second) << "," << (n.first) << endl;
 		
 	return list_node;
 }
@@ -109,8 +107,14 @@ void graphe::readFile(string file_name)
 	else
 	{
 		string line;
+		
+		// On parcours toute les lignes du fichier du graphe
 		while(getline(fichier,line))
 		{
+			/*
+			 * Si la ligne commence par un 'p' on récupère les informations sur le nombre de sommets et d'arc du graphe,
+			 * et on redimensionne la matrice avec les bonnes dimensions 
+			 */
 		    if(line[0]=='p')
 		    {
 			    vector<string> nb_string;
@@ -124,11 +128,12 @@ void graphe::readFile(string file_name)
 			    iss2>>nb_arcs;
 			    
 			    
-			    
-			    
-			    mat.resize(nb_sommets,vector<int>(nb_sommets,0));
+			    mat.resize(nb_sommets,vector<char>(nb_sommets,0));
 			    
 		    }
+		    /*
+		     * Pour toute les autres lignes commecant par un 'e' et représentant un arc du graphe, on ajoute cet arc à la matrice
+		     */
 		    else if (line[0]=='e')
 		    {
 			    int col_1;
@@ -164,12 +169,11 @@ vector<int> graphe::getLinkElement(int element) {
 }
 
 
-int graphe::getMaxArcCountElement(vector< pair< int, vector<int> > > sous_graphe) {
+int graphe::getMaxArcCountElement(vector< pair< int, vector<char> > > &sous_graphe) {
 	int nb_arc = -1;
 	int res;
 	/*
-	 * On parcours la matrice pour trouver le sommet qui possède le plus d'arcs avec d'autres sommets
-	 * et on renvoi ce sommet
+	 * On parcours la matrice pour trouver le sommet qui possède le plus d'arcs le liant à d'autres sommets
 	 */
 	for (unsigned int i = 0; i < sous_graphe.size(); ++i) {
 		int tmp = countRow(sous_graphe[i].second);
@@ -183,8 +187,8 @@ int graphe::getMaxArcCountElement(vector< pair< int, vector<int> > > sous_graphe
 
 
 
-vector< pair< int, vector<int> > > graphe::sousGraphe(int element) {
-	vector< pair< int, vector<int> > > result;
+vector< pair< int, vector<char> > > graphe::sousGraphe(int element) {
+	vector< pair< int, vector<char> > > result;
 	vector<int> sommets_a_traiter = getLinkElement(element);
 	/*
 	 * On parcours la matrice et on stocke dans une sous-matrice les éléments qui 
@@ -194,7 +198,7 @@ vector< pair< int, vector<int> > > graphe::sousGraphe(int element) {
 	 * sous-matrice.
 	 */
 	for (unsigned int i = 0; i < sommets_a_traiter.size(); ++i) {
-		vector<int> tmp; 
+		vector<char> tmp; 
 		for (unsigned int j = 0; j < sommets_a_traiter.size(); ++j) {
 			tmp.push_back(mat[sommets_a_traiter[i]][sommets_a_traiter[j]]);
 		}
@@ -204,8 +208,8 @@ vector< pair< int, vector<int> > > graphe::sousGraphe(int element) {
 }
 
 
-vector< pair< int, vector<int> > > graphe::sousGraphe2(int element, vector< pair< int, vector<int> > > sous_graphe) {
-	vector< pair< int, vector<int> > > result;
+vector< pair< int, vector<char> > > graphe::sousGraphe2(int element, vector< pair< int, vector<char> > > &sous_graphe) {
+	vector< pair< int, vector<char> > > result;
 	vector<int> sommets_a_traiter;
 	
 	/*
@@ -228,7 +232,7 @@ vector< pair< int, vector<int> > > graphe::sousGraphe2(int element, vector< pair
 	 */
 	 
 	for (unsigned int i = 0; i < sommets_a_traiter.size(); ++i) {
-		vector<int> tmp; 
+		vector<char> tmp; 
 		for (unsigned int j = 0; j < sommets_a_traiter.size(); ++j) {
 			tmp.push_back(mat[sommets_a_traiter[i]][sommets_a_traiter[j]]);
 		}
@@ -238,7 +242,7 @@ vector< pair< int, vector<int> > > graphe::sousGraphe2(int element, vector< pair
 }
 
 
-void graphe::rechercheCliqueRecursive(vector<int> &clique_en_cours, vector< pair< int, vector<int> > > &sous_graphe) {
+void graphe::rechercheCliqueRecursive(vector<int> &clique_en_cours, vector< pair< int, vector<char> > > &sous_graphe, int taille_clique_maximale) {
 	/*
 	 * On met comme cas d'arrêt de la fonction récursive que le sous_graphe en paramètre sois complet. 
 	 * Dans ce cas on rajoute ses éléments dans clique_en_cours. 
@@ -257,20 +261,22 @@ void graphe::rechercheCliqueRecursive(vector<int> &clique_en_cours, vector< pair
 	 * Ce sommet est alors ajouté à clique_en_cours et on relance un appel à rechercheClique
 	 */
 	 
-	else {
+	else if (static_cast<int>(clique_en_cours.size() + sous_graphe.size()) > taille_clique_maximale) {
 		int meilleur_sommet = getMaxArcCountElement(sous_graphe);
 		clique_en_cours.push_back(meilleur_sommet);
 		sous_graphe = sousGraphe2(meilleur_sommet, sous_graphe);
-		rechercheCliqueRecursive(clique_en_cours, sous_graphe);
+		rechercheCliqueRecursive(clique_en_cours, sous_graphe, taille_clique_maximale);
 	}
 }
 
 
-vector<int> graphe::rechercheCliqueIteratif(int sommet) {
+vector<int> graphe::rechercheCliqueIteratif(int sommet, int taille_clique_maximale) {
 	vector <int> clique_en_cours;
-	vector< pair <int, vector <int> > > sous_graphe;
+	vector< pair <int, vector <char> > > sous_graphe;
 	sous_graphe = sousGraphe(sommet);
-	while (!isComplete(sous_graphe)) {
+	clique_en_cours.push_back(sommet);
+	
+	while ((!isComplete(sous_graphe)) && (taille_clique_maximale <= static_cast<int>(clique_en_cours.size() + sous_graphe.size()) ) ) {
 		int meilleur_sommet = getMaxArcCountElement(sous_graphe);
 		clique_en_cours.push_back(meilleur_sommet);
 		sous_graphe = sousGraphe2(meilleur_sommet, sous_graphe); 
@@ -281,14 +287,30 @@ vector<int> graphe::rechercheCliqueIteratif(int sommet) {
 
 void graphe::runRechercheCliqueRecursive(int pourcentage) {
 	vector<int> clique_maximale;
+	/*
+	 * On récupère la liste des sommets de la matrice, trié en fonction de celui possèdant le plus d'arcs, à celui en possédant le moins.
+	 */
 	vector< pair<int, int> > liste_element_ordonnee = getElementSortedByArcCount();
+	
+	/*
+	 * On calcule en fonction du pourcentage indiqué, combien de sommets y a t-il à traiter
+	 */
 	int nb_sommets_a_traiter = (int)(nb_sommets * pourcentage)/100;
 	Chrono mychrono(0,"milliseconds");
 	mychrono.start();
+	
+	/*
+	 * Pour chaque sommet du graphe, on applique la fonction récursive qui modifiera la variable clique_en_cours. 
+	 * Ensuite, si la clique trouvé pour ce sommet est plus grande que la plus grande clique trouvé jusqu'à maintenant, 
+	 * on remplace la clique maximale par cette clique. 
+	 */
 	for (int i = 0; i < nb_sommets_a_traiter; ++i) {
-		vector < pair< int, vector<int> > > sous_graphe = sousGraphe(liste_element_ordonnee[i].first);
+		
+		vector < pair< int, vector<char> > > sous_graphe = sousGraphe(liste_element_ordonnee[i].first);
 		vector<int> clique_en_cours;
-		rechercheCliqueRecursive(clique_en_cours, sous_graphe);
+		clique_en_cours.push_back(liste_element_ordonnee[i].first);
+		rechercheCliqueRecursive(clique_en_cours, sous_graphe, clique_maximale.size());
+		
 		if (clique_en_cours.size() > clique_maximale.size()) {
 			clique_maximale = clique_en_cours;
 			mychrono.stop();
@@ -297,10 +319,18 @@ void graphe::runRechercheCliqueRecursive(int pourcentage) {
 			cout << endl;
 			mychrono.start();
 		}
+		mychrono.stop();
+		cout << "_" +to_string(i*100/nb_sommets_a_traiter)<<endl;
+		mychrono.start();
 	}
+	
+	/*
+	 * On affiche le temps de calcul requis ainsi que tous les éléments triés par ordre croissant présent dans la clique maximale trouvée. 
+	 */
 	mychrono.stop();
-	cout << endl << "Temps de calcul : " << (mychrono.getDuration()/1000) <<" seconds" <<  endl;
-	cout << "Clique maximale trouvé (" << clique_maximale.size() << " éléments) : ";
+	cout << "_100" << endl;
+	cout << "Temps de calcul : " << (mychrono.getDuration()/1000) <<" seconds" <<  endl;
+	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";
 	sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
 	for (auto i:clique_maximale) cout << i << " ";
 	cout << endl; 
@@ -309,11 +339,20 @@ void graphe::runRechercheCliqueRecursive(int pourcentage) {
 void graphe::runRechercheCliqueIteratif(int pourcentage) {
 	vector<int> clique_maximale;
 	vector< pair<int, int> > liste_element_ordonnee = getElementSortedByArcCount();
+	/*
+	 * On calcule en fonction du pourcentage indiqué, combien de sommets y a t-il à traiter
+	 */
 	int nb_sommets_a_traiter = (int)(nb_sommets * pourcentage)/100;
 	Chrono mychrono(0, "milliseconds");
 	mychrono.start();
+	
+	/*
+	 * Pour chaque sommet du graphe, on applique la fonction itérative qui nous renverra la clique maximale trouvée par ce sommet. 
+	 * Ensuite, si la clique trouvé pour ce sommet est plus grande que la plus grande clique trouvé jusqu'à maintenant, 
+	 * on remplace la clique maximale par cette clique. 
+	 */
 	for (int i = 0; i < nb_sommets_a_traiter; ++i) {
-		vector<int> clique_en_cours = rechercheCliqueIteratif(liste_element_ordonnee[i].first);
+		vector<int> clique_en_cours = rechercheCliqueIteratif(liste_element_ordonnee[i].first, clique_maximale.size());
 		if (clique_en_cours.size() > clique_maximale.size()) {
 			clique_maximale = clique_en_cours;
 			mychrono.stop();
@@ -322,12 +361,20 @@ void graphe::runRechercheCliqueIteratif(int pourcentage) {
 			cout << endl;
 			mychrono.start();
 		}
+		mychrono.stop();
+		cout << "_" +to_string(i*100/nb_sommets_a_traiter)<<endl;
+		mychrono.start();
 	}
+	/*
+	 * On affiche le temps de calcul requis ainsi que tous les éléments triés par ordre croissant présent dans la clique maximale trouvée. 
+	 */
 	mychrono.stop();
-	cout << endl << "Temps de calcul : " << (mychrono.getDuration()/1000) <<" seconds" <<  endl;
-	cout << "Clique maximale trouvé (" << clique_maximale.size() << " éléments) : ";
+	cout << "_100" << endl;
+	cout << "Temps de calcul : " << (mychrono.getDuration()/1000) <<" seconds" <<  endl;
+	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";
 	sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
 	for (auto i:clique_maximale) cout << i << " ";
 	cout << endl; 
 }
+
 
