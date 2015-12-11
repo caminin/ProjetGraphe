@@ -55,7 +55,6 @@ class graphe
 	//Lit la matrice et retourne une matrice plus petite, limitée aux sommets ayant un arc avec l'élement choisis
 	
 	vector< pair< int, vector<char> > > sousGraphe2(int element, vector< pair< int, vector<char> > > &sous_graphe);
-
 	//Lit un sous-graphe et retourne une matrice plus petite, limitée aux sommets ayant un arc avec l'élement choisis
 	
 	void rechercheCliqueRecursive(vector<int> &clique_en_cours, vector< pair< int, vector<char> > > &sous_graphe, int taille_clique_maximale);
@@ -70,9 +69,12 @@ class graphe
 	void runRechercheCliqueIteratif(int pourcentage);
 	//Execute la fonction itérative de recherche de clique en ne prenant en compte qu'un pourcentage des sommets ayant le plus d'arcs
 	
-	void verifClique(vector <int> &clique);
+	void isCliqueMaximale(vector <int> &clique);
+	//Cherche si la clique est maximale et affiche les éléments importants pour l'interface graphique. Utilise isClique, et ajoute un élément si la clique
+	//n'est pas maximale
 	
-	bool isClique(vector<int> &clique);
+	bool isClique(vector<int> &sous_graphe);
+	//Retourne si le sous-graphe est une clique
 	
 };
 

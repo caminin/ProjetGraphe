@@ -50,22 +50,6 @@ unsigned int graphe::countRow(vector<char> &row)
 	return i;
 }
 
-<<<<<<< HEAD
-=======
-vector<int>& graphe::getSameElement(unsigned int element1,unsigned int element2,vector<int> &same)
-{
-	same.clear();
-	for(unsigned int i=0;i<mat.size();i++)
-	{
-		if((mat[element1][i]==1)&&(mat[element2][i]==1)&&element1!=i&&element2!=i)
-		{
-			same.push_back(i);
-		}
-	}
-	return same;
-}
->>>>>>> da78a3ebb49d4bfe8e3daef853e5bf40c90913ba
-
 bool graphe::isComplete(vector< pair< int, vector<char> > > &mymat)
 {
 	bool res=true;
@@ -312,7 +296,7 @@ void graphe::runRechercheCliqueRecursive(int pourcentage) {
 	 * On calcule en fonction du pourcentage indiqué, combien de sommets y a t-il à traiter
 	 */
 	int nb_sommets_a_traiter = (int)(nb_sommets * pourcentage)/100;
-	Chrono mychrono(0,"milliseconds"),mychrono2(0,"nanoseconds");
+	Chrono mychrono(0,"milliseconds");
 	mychrono.start();
 	
 	/*
@@ -342,7 +326,7 @@ void graphe::runRechercheCliqueRecursive(int pourcentage) {
 			cout << "Changement de clique maximale :" << endl;
 			sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
 			for (auto i:clique_maximale) cout << i << " " ;
-			cout << endl;
+			cout << endl << "\t" << endl;
 			mychrono.start();
 		}
 		mychrono.stop();
@@ -353,11 +337,8 @@ void graphe::runRechercheCliqueRecursive(int pourcentage) {
 	/*
 	 * On affiche le temps de calcul requis ainsi que tous les éléments triés par ordre croissant présent dans la clique maximale trouvée. 
 	 */
-	mychrono2.start();
-	verifClique(clique_maximale);
 	mychrono.stop();
-	mychrono2.stop();
-	cout << "temps algo supp " << (mychrono2.getDuration()/1000.0) <<" microseconds" << endl;
+	isCliqueMaximale(clique_maximale);
 	cout << "_100" << endl;
 	cout << "Temps de calcul : " << (mychrono.getDuration()/1000.0) <<" seconds" <<  endl;
 	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";
@@ -396,7 +377,7 @@ void graphe::runRechercheCliqueIteratif(int pourcentage) {
 			mychrono.stop();
 			cout << "Changement de clique maximale (" << clique_maximale.size() << " éléments) : " << endl;
 			for (auto i:clique_maximale) cout << i << " " ;
-			cout << endl;
+			cout << endl << "\t" << endl;
 			mychrono.start();
 		}
 		mychrono.stop();
@@ -407,6 +388,7 @@ void graphe::runRechercheCliqueIteratif(int pourcentage) {
 	 * On affiche le temps de calcul requis ainsi que tous les éléments triés par ordre croissant présent dans la clique maximale trouvée. 
 	 */
 	mychrono.stop();
+	isCliqueMaximale(clique_maximale);
 	cout << "_100" << endl;
 	cout << "Temps de calcul : " << (mychrono.getDuration()/1000) <<" seconds" <<  endl;
 	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";
@@ -417,7 +399,7 @@ void graphe::runRechercheCliqueIteratif(int pourcentage) {
 
 
 
-void graphe::verifClique(vector <int> &clique)
+void graphe::isCliqueMaximale(vector <int> &clique)
 {
 	if(clique.size()>2)
 	{
@@ -451,6 +433,19 @@ void graphe::verifClique(vector <int> &clique)
 				
 			}
 		}
+		if(isClique(clique))
+		{
+			if(tmp.size()==0	)
+				cout << "Le sous-graphe est une clique maximale" << endl;
+			else
+			{
+				cout << "La sous-graphe trouvée n'est pas maximale" << endl;
+			}
+		}
+		else
+		{
+			cout << "Le sous-graphe n'est pas une clique !"<<endl;
+		}
 		for(auto n:tmp)
 		{
 			clique.push_back(n);
@@ -464,26 +459,15 @@ void graphe::verifClique(vector <int> &clique)
 			}
 			
 		}
-		if(isClique(clique))
-		{
-			cout << "La clique est bien complète" << endl;
-		}
-		else
-		{
-			cout << "La clique n'est pas complète !" << endl;
-		}
-		
-		
-		
 	}
 }
 
-bool graphe::isClique(vector <int> &clique)
+bool graphe::isClique(vector <int> &sous_graphe)
 {
 	bool res=true;
-	for(auto n:clique)
+	for(auto n:sous_graphe)
 	{
-		for (auto m:clique)
+		for (auto m:sous_graphe)
 		{
 			if(m!=n)
 			{
