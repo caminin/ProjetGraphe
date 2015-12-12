@@ -37,6 +37,7 @@ void graphe::affichage()
 	cout << "~______________" << endl;
 	cout << "~Il a : " << nb_arcs << " Arcs" << endl;
 	cout << "~Il a : " << nb_sommets << " Sommets" << endl;
+	cout << "~Il a une densité de  " << (int)((double)(nb_arcs)/((double)(nb_sommets)*(double)(nb_sommets)/2)*100.0) << " %" << endl;
 }
 
 unsigned int graphe::countRow(vector<char> &row)
@@ -322,9 +323,7 @@ void graphe::runRechercheCliqueRecursive(int pourcentage) {
 			
 			clique_maximale = clique_en_cours;
 			mychrono.stop();
-
-			cout << "Changement de clique maximale :" << endl;
-			sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
+			cout << "Changement de clique maximale (" << clique_maximale.size() << " éléments) : " << endl;
 			for (auto i:clique_maximale) cout << i << " " ;
 			cout << endl << "\t" << endl;
 			mychrono.start();

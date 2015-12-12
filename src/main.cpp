@@ -11,24 +11,7 @@ pair<int,string> parseCommandLine(int argc, char* argv[])
 	string file_name="";
 	if(argc<3)
 	{
-	  std::cout << "Donnez un nombre entre 0 et 100, --help pour plus d'info" << std::endl;
-	  int_return=-1;
-	}
-	else if(strcmp(argv[1],"--help")==0)
-	{
-	  std::ifstream fichier("help.txt");
-	  if(!fichier) 
-	  {
-		   std::cerr << "Le fichier help n'existe pas" << std::endl;
-	  }
-	  else
-	  {
-		   std::string line;
-		   while(std::getline(fichier,line))
-		   {
-		       std::cout << line << std::endl;
-		   }
-	  }
+	  std::cout << "Donnez un nombre entre 0 et 100" << std::endl;
 	  int_return=-1;
 	}
 	else if(strcmp(argv[1],"affichage")==0)
