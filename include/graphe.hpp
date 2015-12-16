@@ -76,6 +76,10 @@ class graphe
 	bool isClique(vector<int> &sous_graphe);
 	//Retourne si le sous-graphe est une clique
 	
+	void endAlgo(Chrono &myChrono,vector<int> &clique_maximale);
+	//fais la fin des deux algo
+	
+	void changementDeClique(Chrono &myChrono,vector<int> &clique_maximale,vector<int> &clique_enc_cours);
 };
 
 bool sortVectorPair(pair<int,int> p1, pair<int,int> p2);

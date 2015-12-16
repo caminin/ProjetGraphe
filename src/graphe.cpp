@@ -33,7 +33,7 @@ void graphe::affichage()
 		
 		cout << "|" << endl;
 	}
-	cout << "La matrice chargé est de taille " << nb_sommets << endl;
+	cout << "La matrice chargée est de taille " << nb_sommets << endl;
 	cout << "~______________" << endl;
 	cout << "~Il a : " << nb_arcs << " Arcs" << endl;
 	cout << "~Il a : " << nb_sommets << " Sommets" << endl;
@@ -314,18 +314,7 @@ void graphe::runRechercheCliqueRecursive(int pourcentage) {
 		
 		if (clique_en_cours.size() > clique_maximale.size()) {
 			mychrono.stop();
-			cout << "Passage de : "<<endl;
-			sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
-			for(auto n:clique_maximale)
-				cout << n << " ";
-			cout << endl;
-			mychrono.start();
-			
-			clique_maximale = clique_en_cours;
-			mychrono.stop();
-			cout << "Changement de clique maximale (" << clique_maximale.size() << " éléments) : " << endl;
-			for (auto i:clique_maximale) cout << i << " " ;
-			cout << endl << "\t" << endl;
+			changementDeClique(mychrono,clique_maximale,clique_en_cours);
 			mychrono.start();
 		}
 		mychrono.stop();
@@ -337,13 +326,8 @@ void graphe::runRechercheCliqueRecursive(int pourcentage) {
 	 * On affiche le temps de calcul requis ainsi que tous les éléments triés par ordre croissant présent dans la clique maximale trouvée. 
 	 */
 	mychrono.stop();
-	isCliqueMaximale(clique_maximale);
-	cout << "_100" << endl;
-	cout << "Temps de calcul : " << (mychrono.getDuration()/1000.0) <<" seconds" <<  endl;
-	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";
-	sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
-	for (auto i:clique_maximale) cout << i << " ";
-	cout << endl; 
+	endAlgo(mychrono,clique_maximale);
+
 }
 
 void graphe::runRechercheCliqueIteratif(int pourcentage) {
@@ -365,18 +349,7 @@ void graphe::runRechercheCliqueIteratif(int pourcentage) {
 		vector<int> clique_en_cours = rechercheCliqueIteratif(liste_element_ordonnee[i].first, clique_maximale.size());
 		if (clique_en_cours.size() > clique_maximale.size()) {
 			mychrono.stop();
-			cout << "Passage de : "<<endl;
-			sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
-			for(auto n:clique_maximale)
-				cout << n << " ";
-			cout << endl;
-			mychrono.start();
-				
-			clique_maximale = clique_en_cours;
-			mychrono.stop();
-			cout << "Changement de clique maximale (" << clique_maximale.size() << " éléments) : " << endl;
-			for (auto i:clique_maximale) cout << i << " " ;
-			cout << endl << "\t" << endl;
+			changementDeClique(mychrono,clique_maximale,clique_en_cours);
 			mychrono.start();
 		}
 		mychrono.stop();
@@ -387,13 +360,42 @@ void graphe::runRechercheCliqueIteratif(int pourcentage) {
 	 * On affiche le temps de calcul requis ainsi que tous les éléments triés par ordre croissant présent dans la clique maximale trouvée. 
 	 */
 	mychrono.stop();
-	isCliqueMaximale(clique_maximale);
+	endAlgo(mychrono,clique_maximale);
+	
+}
+
+void graphe::endAlgo(Chrono &myChrono,vector<int> &clique_maximale)
+{
+	
 	cout << "_100" << endl;
-	cout << "Temps de calcul : " << (mychrono.getDuration()/1000) <<" seconds" <<  endl;
-	cout << "Clique maximale trouvé jusqu'à maintenant (" << clique_maximale.size() << " éléments) : ";
+	cout << "<";
+	for(int j=0;j<256;j++)
+	{
+		cout << "-";
+	}	
+	cout << ">" << endl;
+	cout << "Résultat : " << endl;
+	isCliqueMaximale(clique_maximale);
+	cout << "Le temps de calcul est de " << (myChrono.getDuration()/1000) <<" seconds" <<  endl;
+	cout << "La clique maximale trouvée est de " << clique_maximale.size() << " éléments : ";
 	sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
 	for (auto i:clique_maximale) cout << i << " ";
 	cout << endl; 
+}
+
+void graphe::changementDeClique(Chrono &myChrono,vector<int> &clique_maximale,vector<int> &clique_en_cours)
+{
+	cout << "Je change de clique actuelle. Je passe d'une clique de taille "<< clique_maximale.size()<<" : "<<endl;
+	sort(clique_maximale.begin(), clique_maximale.end(), [](int a, int b){return a < b;});
+	for(auto n:clique_maximale)
+		cout << n << " ";
+	cout << endl;
+	myChrono.start();
+	clique_maximale = clique_en_cours;
+	myChrono.stop();
+	cout << "À une clique de taille " << clique_maximale.size() << " : " << endl;
+	for (auto i:clique_maximale) cout << i << " " ;
+	cout << endl << "\t" << endl;
 }
 
 
@@ -473,7 +475,6 @@ bool graphe::isClique(vector <int> &sous_graphe)
 				if(mat[m][n]==0)
 				{
 					res=false;
-					//cout << "coordonne " << m <<","<<n<< endl;
 				}
 			}
 		}
