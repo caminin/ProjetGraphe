@@ -120,16 +120,27 @@ void graphe::readFile(string file_name)
 			    vector<string> nb_string;
 			    Split(nb_string,line,' ');
 			    
-			    
-			    istringstream iss(nb_string[2]);
-			    iss>>nb_sommets;
-
-			    istringstream iss2(nb_string[3]);
-			    iss2>>nb_arcs;
-			    
-			    
-			    mat.resize(nb_sommets,vector<char>(nb_sommets,0));
-			    
+			    if(nb_string[2]!="")
+			    {
+					 istringstream iss(nb_string[2]);
+					 iss>>nb_sommets;
+					 if(nb_string[2]!="")
+					 {
+						 istringstream iss2(nb_string[3]);
+						 iss2>>nb_arcs;
+						 mat.resize(nb_sommets,vector<char>(nb_sommets,0));
+					 }
+					 else
+					 {
+						 cout << "|Erreur lors du chargement, veuillez vérifier le fichier" << endl;
+						 break;
+					 }
+			    }
+			    else
+			    {
+				    cout << "|Erreur lors du chargement, veuillez vérifier le fichier" << endl;
+				    break;
+			    }
 		    }
 		    /*
 		     * Pour toute les autres lignes commecant par un 'e' et représentant un arc du graphe, on ajoute cet arc à la matrice
@@ -322,9 +333,6 @@ void graphe::runRechercheCliqueRecursive(int pourcentage) {
 		mychrono.start();
 	}
 	
-	/*
-	 * On affiche le temps de calcul requis ainsi que tous les éléments triés par ordre croissant présent dans la clique maximale trouvée. 
-	 */
 	mychrono.stop();
 	endAlgo(mychrono,clique_maximale);
 
@@ -356,9 +364,7 @@ void graphe::runRechercheCliqueIteratif(int pourcentage) {
 		cout << "_" +to_string(i*100/nb_sommets_a_traiter)<<endl;
 		mychrono.start();
 	}
-	/*
-	 * On affiche le temps de calcul requis ainsi que tous les éléments triés par ordre croissant présent dans la clique maximale trouvée. 
-	 */
+	
 	mychrono.stop();
 	endAlgo(mychrono,clique_maximale);
 	
@@ -366,7 +372,9 @@ void graphe::runRechercheCliqueIteratif(int pourcentage) {
 
 void graphe::endAlgo(Chrono &myChrono,vector<int> &clique_maximale)
 {
-	
+	/*
+	 * On affiche le temps de calcul requis ainsi que tous les éléments triés par ordre croissant présent dans la clique maximale trouvée. 
+	 */
 	cout << "_100" << endl;
 	cout << "<";
 	for(int j=0;j<256;j++)
@@ -397,7 +405,6 @@ void graphe::changementDeClique(Chrono &myChrono,vector<int> &clique_maximale,ve
 	for (auto i:clique_maximale) cout << i << " " ;
 	cout << endl << "\t" << endl;
 }
-
 
 
 void graphe::isCliqueMaximale(vector <int> &clique)

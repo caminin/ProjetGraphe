@@ -5,16 +5,22 @@
 
 using namespace std;
 
+/*
+*	Permet de parser les arguments en ligne de commande.
+*	Renvoie les éléments nécessaires au lancement du programme 
+*	pair<int,string> = pair du pourcentage entré et du choix de l'algo("it ou rec")'
+*
+*/
 pair<int,string> parseCommandLine(int argc, char* argv[])
 {
 	int int_return;
 	string file_name="";
-	if(argc<3)
+	if(argc<3)//si le nombre d'arguments n'est pas suffisant
 	{
 	  std::cout << "Donnez un nombre entre 0 et 100" << std::endl;
 	  int_return=-1;
 	}
-	else if(strcmp(argv[1],"affichage")==0)
+	else if(strcmp(argv[1],"affichage")==0)//si on est en mode affichage
 	{
 		for(unsigned int i=0;i<strlen(argv[2]);i++)
 		{
@@ -22,13 +28,13 @@ pair<int,string> parseCommandLine(int argc, char* argv[])
 		}
 		int_return =-2;
 	}
-	else
+	else 
 	{
-		if(argc<4)
+		if(argc<4)//s'il manque des arguments pour le mode calcul
 		{
 			cout << "Il manque des arguments, la forme est 'prog pourcentage nom_fichier algo'" << endl;
 		}
-		else
+		else//récupère le pourcentage et le type d'algo'
 		{
 			float puissance=1;
 			float nombre=0;
@@ -59,7 +65,7 @@ pair<int,string> parseCommandLine(int argc, char* argv[])
 }
 
 
-void runAffichage(string file_name)
+void runAffichage(string file_name)//lance l'affichage'
 {
 	graphe g;
 	g.readFile(file_name);
@@ -67,7 +73,7 @@ void runAffichage(string file_name)
 }
 
 
-void runProgramme(int pourcentage, string file_name, bool isIteratif)
+void runProgramme(int pourcentage, string file_name, bool isIteratif)//lance le calcul
 {
 	graphe g;
 	g.readFile(file_name);
@@ -88,11 +94,11 @@ int main(int argc, char* argv[])
 	
 	pair<int,string> resParceCommand=parseCommandLine(argc,argv);
 	
-	if(resParceCommand.first>=0)
+	if(resParceCommand.first>=0)//si le retour est un nombre équivalent à un pourcentage
 	{
 		runProgramme(resParceCommand.first, resParceCommand.second, (strcmp(argv[3], "iteratif")==0));
 	}
-	else if(resParceCommand.first==-2)
+	else if(resParceCommand.first==-2)//si le retour est le nombre correspondant à affichage
 	{
 		runAffichage(resParceCommand.second);
 	}

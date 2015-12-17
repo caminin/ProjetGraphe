@@ -2,19 +2,13 @@
 #define GRAPHE
 
 #include <iostream>
-#include <fstream>
-#include <chrono>
-#include <random>
-#include <ctime>
-#include <cassert>
 #include <string>
+#include <fstream>
 #include <vector>
 #include <sstream>
 #include <stdio.h>
 #include <map>
 #include <algorithm> 
-#include <utility>
-#include <set>
 #include "chrono.hpp"
 
 using namespace std;
@@ -80,6 +74,7 @@ class graphe
 	//fais la fin des deux algo
 	
 	void changementDeClique(Chrono &myChrono,vector<int> &clique_maximale,vector<int> &clique_enc_cours);
+	//sert dans les algortihmes, permet l'échange de clique et l'affichage'
 };
 
 bool sortVectorPair(pair<int,int> p1, pair<int,int> p2);
