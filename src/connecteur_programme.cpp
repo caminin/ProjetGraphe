@@ -67,7 +67,7 @@ void connecteur_programme::affiche()
 
 void connecteur_programme::choisir_graphe()
 {
-    QUrl url_file = QFileDialog::getOpenFileUrl(0,"Selectionner un graphe");
+    QUrl url_file = QFileDialog::getOpenFileName(0,"Selectionner un graphe");
     file_url->setText(url_file.path());
 
     affichage_programme->setText("");

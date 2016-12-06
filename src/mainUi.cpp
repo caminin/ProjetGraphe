@@ -1,9 +1,9 @@
-#include "mainwindow.h"
 #include "connecteur_programme.h"
 #include <QtGui>
 #include <QGroupBox>
 #include <QRadioButton>
 #include <QProgressBar>
+#include <QTextCodec>
 using namespace std;
 
 
@@ -98,7 +98,9 @@ int main( int argc, char **argv )
 
 
     w.setMinimumSize(1350,700);
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("utf8"));
     w.show();
+
 
     return app.exec();
 }
